@@ -11,7 +11,7 @@ This project provides an API to process retail receipts, calculate reward points
 
 - Clone the Repository
    ```bash
-   git clone https://github.com/yourusername/process-receipts.git
+   git clone https://github.com/saisujith222/receipt-processor-challenge.git
    cd cmd/process-receipts
 	```
 - Install Dependencies: Initialize the Go module and install the required dependencies:
