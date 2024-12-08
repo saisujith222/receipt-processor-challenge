@@ -26,7 +26,7 @@ This project provides an API to process retail receipts, calculate reward points
 
 ## Testing Endpoints
 - Here are the sample requests for testing the endpoints
-  ### Process Receipts
+### Process Receipts
 ```bash
 curl -X POST http://localhost:8080/receipts/process \
      -H "Content-Type: application/json" \
