@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -103,12 +104,10 @@ func calculateTotalPoints(total string) (int, error) {
 		return 0, err
 	}
 
-	// 50 points for round total
 	if totalFloat == float64(int(totalFloat)) {
 		points += 50
 	}
 
-	// 25 points for multiple of 0.25
 	if int(totalFloat*100)%25 == 0 {
 		points += 25
 	}
@@ -164,20 +163,20 @@ func calculateOddDayPoints(purchaseDate string) (int, error) {
 func calculateTimePoints(purchaseTime string) (int, error) {
 	time := strings.Split(purchaseTime, ":")
 	hour, err := strconv.Atoi(time[0])
-	if err != nil {
+	if err != nil || hour < 0 || hour > 24{
 		logger.Errorf("error parsing purchase time '%s': %v", purchaseTime, err)
-		return 0, err
+		return 0, errors.New("error parsing purchase time")
 	}
 	mins, err := strconv.Atoi(time[1])
-	if err != nil {
+	if err != nil || mins < 0 || mins > 60{
 		logger.Errorf("error parsing purchase time '%s': %v", purchaseTime, err)
-		return 0, err
+		return 0, errors.New("error parsing purchase time")
 	}
 
-	if (hour == 14 && mins != 0) || hour == 15 {
+	if hour == 14 || hour == 15 {
 		return 10, nil
 	}
-	return 0, err
+	return 0, nil
 }
 
 func retrievePoints(c *gin.Context) {
